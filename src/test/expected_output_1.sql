@@ -49,6 +49,7 @@ where acc_create_time >= '2026-01-11'
     and regexp_like(risk_tags, 'ATTR_Device_LowResolution')
     and acc_create_os != 'android'
 ;
+
 insert into kudu."10066_bi_ods".total_account_attr_all (
     acc_id, risk_attr, risk_tags
 )

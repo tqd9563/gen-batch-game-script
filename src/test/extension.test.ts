@@ -1,15 +1,22 @@
 import * as assert from 'assert';
+import * as fs from 'fs';
+import * as path from 'path';
+import { generateBatchSQL } from '../generator';
 
-// You can import and use all API from the 'vscode' module
-// as well as import your extension to test it
-import * as vscode from 'vscode';
-// import * as myExtension from '../../extension';
+suite('generateBatchSQL', () => {
+	const testDir = path.join(__dirname, '..', '..', 'src', 'test');
 
-suite('Extension Test Suite', () => {
-	vscode.window.showInformationMessage('Start all tests.');
+	test('test_case_1: {{ params.game_id }} replacement', () => {
+		const template = fs.readFileSync(path.join(testDir, 'test_case_1.sql'), 'utf-8');
+		const expected = fs.readFileSync(path.join(testDir, 'expected_output_1.sql'), 'utf-8');
+		const result = generateBatchSQL(template);
+		assert.strictEqual(result, expected);
+	});
 
-	test('Sample test', () => {
-		assert.strictEqual(-1, [1, 2, 3].indexOf(5));
-		assert.strictEqual(-1, [1, 2, 3].indexOf(0));
+	test('test_case_2: mixed {{ game_id }} and {{ params.game_id }} replacement', () => {
+		const template = fs.readFileSync(path.join(testDir, 'test_case_2.sql'), 'utf-8');
+		const expected = fs.readFileSync(path.join(testDir, 'expected_output_2.sql'), 'utf-8');
+		const result = generateBatchSQL(template);
+		assert.strictEqual(result, expected);
 	});
 });
